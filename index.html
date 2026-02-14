@@ -23,6 +23,7 @@
         }
         .active { display: block; animation: fadePage 1.2s ease-in-out; }
         @keyframes fadePage { from { opacity: 0; } to { opacity: 1; } }
+        
         .typing {
             font-size: 21px;
             line-height: 1.5;
@@ -31,81 +32,62 @@
             margin: auto;
             white-space: pre-wrap;
         }
-        .btn-container {
-            margin-top: 30px;
-            position: relative;
-            height: 100px;
-        }
-        .next-btn {
-            display: none; 
-            padding: 12px 28px;
-            font-size: 18px;
-            border: none;
-            border-radius: 30px;
-            cursor: pointer;
-            background: purple;
-            color: white;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            transition: all 0.3s ease;
-        }
-        #noBtn {
-            padding: 12px 28px;
-            font-size: 18px;
-            border: none;
-            border-radius: 30px;
-            cursor: pointer;
-            background: #ddd;
-            transition: all 0.3s ease;
-        }
 
-        /* Secret Letter Style */
+        .btn-container { margin-top: 30px; position: relative; height: 150px; }
+        .next-btn, #noBtn {
+            padding: 12px 28px;
+            font-size: 18px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .next-btn { background: purple; color: white; box-shadow: 0 5px 15px rgba(0,0,0,0.2); display: none; }
+        #noBtn { background: #ddd; color: purple; }
+
         #letterContainer {
             display: none;
             position: fixed;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 150px;
-            cursor: pointer;
+            text-align: center;
             z-index: 1000;
-            animation: bounce 2s infinite;
         }
-        @keyframes bounce { 0%, 100% { transform: translate(-50%, -50%) scale(1); } 50% { transform: translate(-50%, -50%) scale(1.2); } }
+        .letter-icon { font-size: 150px; cursor: pointer; animation: bounce 2s infinite; display: block; }
+        .click-me { font-size: 22px; font-weight: bold; color: purple; margin-top: -10px; display: block; }
+        @keyframes bounce { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); } }
 
-        .gallery-container { max-width: 1000px; margin: auto; padding: 20px; padding-bottom: 80px; }
-        .headline { font-size: 26px; font-weight: bold; margin-bottom: 20px; font-style: italic; }
-        .merged-images { display: flex; justify-content: center; align-items: center; gap: 10px; height: 310px; margin-bottom: 30px; }
-        .merged-images img { width: 190px; height: 270px; object-fit: cover; border-radius: 20px; cursor: pointer; }
-        .image-row { display: flex; gap: 15px; overflow-x: auto; padding: 20px; background: rgba(255, 255, 255, 0.3); border-radius: 20px; }
-        .image-row img { width: 140px; height: 190px; flex-shrink: 0; object-fit: cover; border-radius: 15px; cursor: pointer; }
+        .gallery-container { max-width: 500px; margin: auto; padding: 20px; padding-bottom: 80px; }
+        .image-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            justify-items: center;
+        }
+        .image-grid img {
+            width: 100%;
+            height: 230px;
+            object-fit: cover;
+            border-radius: 15px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
 
-        #modal { display: none; position: fixed; z-index: 999; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.9); flex-direction: column; justify-content: center; align-items: center; }
-        #modal img { max-width: 80%; max-height: 60%; border-radius: 10px; border: 3px solid white; }
-        #modalNote { color: white; font-size: 20px; margin-top: 15px; text-align: center; width: 80%; }
+        #modal { display: none; position: fixed; z-index: 6000; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.9); flex-direction: column; justify-content: center; align-items: center; }
+        #modal img { max-width: 85%; max-height: 65%; border-radius: 10px; border: 3px solid white; }
+        #modalNote { color: white; font-size: 20px; margin-top: 15px; text-align: center; width: 85%; }
         .close-modal { position: absolute; top: 20px; right: 30px; color: white; font-size: 40px; cursor: pointer; }
 
-        .fly-emoji { position: fixed; bottom: -50px; font-size: 30px; animation: floatUp 4s linear forwards; z-index: 2000; }
+        .fly-emoji { position: fixed; bottom: -50px; font-size: 35px; animation: floatUp 4s linear forwards; z-index: 5000; }
         @keyframes floatUp { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; } }
-        
+
         #hugOverlay { 
-            display: none; 
-            position: fixed; 
-            top: 0; left: 0; 
-            width: 100%; height: 100%; 
-            background: rgba(255,255,255,0.8); 
-            z-index: 3000; 
-            justify-content: center; 
-            align-items: center; 
-            flex-direction: column;
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(255,255,255,0.9); z-index: 4500; 
+            justify-content: center; align-items: center; font-size: 150px; 
         }
-        .zoom-emoji {
-            font-size: 10px;
-            animation: growEmoji 2.5s ease-in-out forwards;
-        }
-        @keyframes growEmoji {
-            0% { transform: scale(1); opacity: 0; }
-            50% { opacity: 1; }
-            100% { transform: scale(35); opacity: 0; }
-        }
+        .zoom-anim { animation: zoomInOut 2.5s ease-in-out forwards; }
+        @keyframes zoomInOut { 0% { transform: scale(0.1); opacity: 0; } 50% { transform: scale(1.8); opacity: 1; } 100% { transform: scale(1.5); opacity: 0; } }
     </style>
 </head>
 <body>
@@ -118,9 +100,13 @@
     <div id="modalNote"></div>
 </div>
 
-<div id="letterContainer" onclick="openLetter()">💌</div>
+<div id="letterContainer">
+    <span class="letter-icon" onclick="openLetter()">💌</span>
+    <span class="click-me">Click Ma🤭</span>
+</div>
+
 <div id="hugOverlay">
-    <div class="zoom-emoji">🫂😘</div>
+    <div id="emojiDisplay">🫂</div>
 </div>
 
 <div class="page active" id="page1">
@@ -143,18 +129,16 @@
 
 <div class="page" id="page4">
     <div class="gallery-container">
-        <div class="headline">These are just small memories📸 & click me 🤭 chloo 😜</div>
-        <div class="merged-images">
+        <div class="headline" style="font-size: 22px; margin-bottom: 25px;">These are just small memories📸 & click me 🤭 chloo 😜</div>
+        <div class="image-grid">
             <img src="love1.jpg" onclick="openZoom(this.src, 'image1')">
             <img src="love2.jpg" onclick="openZoom(this.src, 'image2')">
-        </div>
-        <div class="image-row">
             <img src="love3.jpg" onclick="openZoom(this.src, 'image3')">
             <img src="love4.jpg" onclick="openZoom(this.src, 'image4')">
             <img src="love5.jpg" onclick="openZoom(this.src, 'image5')">
             <img src="love6.jpg" onclick="openZoom(this.src, 'image6')">
         </div>
-        <button onclick="finalHug()" class="next-btn" style="display:inline-block;">I Love You so soo muchhhh machaa😘🫂💕</button>
+        <button onclick="finalAnimationSequence()" class="next-btn" id="finalBtn" style="display:inline-block; margin-top: 40px;">Huge Hug for You!🫵🫂</button>
     </div>
 </div>
 
@@ -169,8 +153,7 @@
         'image6': "Hand in hand to Jannah, for all eternity...😘♾️"
     };
 
-    let yesCount = 0;
-    let noCount = 0;
+    let yesCount = 0, noCount = 0;
 
     function typeEffect(id, text, btnId) {
         let i = 0; let element = document.getElementById(id); let btn = document.getElementById(btnId);
@@ -185,21 +168,40 @@
     }
 
     typeEffect("text1", "Will You Stay With Me Forever baby🫂? 🤍💜", "btn1");
+    
     function startEverything() { nasheed.play(); showPage(2); }
 
     function showPage(pageNumber) {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         const targetPage = document.getElementById('page' + pageNumber);
         if(targetPage) targetPage.classList.add('active');
-        if (pageNumber === 2) typeEffect("text2", "Since you came into my life... You are my peace🥰", "btn2");
-        if (pageNumber === 3) typeEffect("text3", "In a world full of temporary things, you are my forever💕", "btn3");
+        if (pageNumber === 2) typeEffect("text2", "Since you came into my life🫂, everything became more beautiful😘💕. <br>You are my peace🥰, my happiness🥹, my forever💕😘", "btn2");
+        if (pageNumber === 3) typeEffect("text3", "You are the calm in my chaos😘 and the smile in my every day🥰 <br><br>In a world full of temporary things🫂, you are my forever💕 <br><br>I don't just want you in this life; I want you in my Akhirah too. ✨ I pray that Allah blesses our journey and grants us a home filled with happiness, where we grow together and raise our babies 🫂 with a love that leads us both to Jannah. 🤲 <br><br>Even in Paradise🫶, among all its wonders, my eyes will still only look for you. I want to walk through the gates of Jannah together, hand in hand🤝, loving you for all of eternity😘🥰.", "btn3");
+    }
+
+    function moveYes() {
+        let b = document.getElementById("btn1");
+        yesCount++;
+        if (yesCount === 1) { b.style.position = "absolute"; b.style.left = "5vw"; b.style.top = "50vh"; }
+        else if (yesCount === 2) { b.style.position = "absolute"; b.style.left = "75vw"; b.style.top = "30vh"; }
+        else { b.style.position = "relative"; b.style.left = "0"; b.style.top = "0"; yesCount = 0; }
+    }
+
+    function moveNo() {
+        let b = document.getElementById("noBtn");
+        noCount++;
+        if (noCount === 1) { b.style.position = "absolute"; b.style.left = "75vw"; b.style.top = "10vh"; }
+        else if (noCount === 2) { b.style.position = "absolute"; b.style.left = "10vw"; b.style.top = "5vh"; }
+        else if (noCount === 3) { b.style.position = "absolute"; b.style.left = "20vw"; b.style.top = "80vh"; }
+        else if (noCount === 4) { b.style.position = "absolute"; b.style.left = "65vw"; b.style.top = "75vh"; }
+        else { b.style.position = "relative"; b.style.left = "0"; b.style.top = "0"; noCount = 0; }
     }
 
     function triggerFly(emoji) {
-        for(let i=0; i<15; i++) {
+        for(let i=0; i<35; i++) { // Increased for full screen spread
             let e = document.createElement("div"); e.classList.add("fly-emoji");
-            e.innerHTML = emoji; e.style.left = Math.random() * 100 + "vw";
-            e.style.animationDelay = Math.random() * 2 + "s";
+            e.innerHTML = emoji; e.style.left = Math.random() * 95 + "vw";
+            e.style.animationDelay = Math.random() * 3 + "s";
             document.body.appendChild(e);
             setTimeout(() => e.remove(), 5000);
         }
@@ -213,53 +215,48 @@
     function openLetter() {
         document.getElementById("letterContainer").style.display = "none";
         showPage(4);
-        triggerFly('✨');
     }
 
-    function finalHug() {
-        document.getElementById("hugOverlay").style.display = "flex";
-        setTimeout(() => { location.reload(); }, 2500);
+    function finalAnimationSequence() {
+        const overlay = document.getElementById("hugOverlay");
+        const emoji = document.getElementById("emojiDisplay");
+        overlay.style.display = "flex";
+
+        // Hug Zoom
+        emoji.innerHTML = "🫂";
+        emoji.className = "zoom-anim";
+
+        setTimeout(() => {
+            // Kiss Zoom
+            emoji.innerHTML = "😘";
+            emoji.className = ""; 
+            void emoji.offsetWidth; 
+            emoji.className = "zoom-anim";
+            
+            // Lipmarks Spread Full Screen
+            triggerFly('💋');
+
+            setTimeout(() => {
+                overlay.style.display = "none";
+                const btn = document.getElementById("finalBtn");
+                btn.innerHTML = "I love you so soo muchhhh Machaa😚";
+                btn.onclick = () => location.reload(); 
+            }, 2500);
+        }, 2500);
     }
 
     function openZoom(src, imgKey) {
         document.getElementById("modal").style.display = "flex";
         document.getElementById("modalImg").src = src;
-        document.getElementById("modalNote").innerText = notes[imgKey] || "💜";
+        document.getElementById("modalNote").innerText = notes[imgKey] || "🤍" "💜";
     }
     function closeZoom() { document.getElementById("modal").style.display = "none"; }
-
-    function moveNo() {
-        let b = document.getElementById("noBtn");
-        noCount++;
-        if (noCount <= 5) {
-            b.style.position = "absolute";
-            b.style.left = Math.random() * 70 + "vw";
-            b.style.top = Math.random() * 70 + "vh";
-        } else {
-            b.style.position = "relative";
-            b.style.left = "0px";
-            b.style.top = "0px";
-            noCount = 0; // Reset for next time
-        }
-    }
-
-    function moveYes() {
-        let b = document.getElementById("btn1");
-        yesCount++;
-        if (yesCount <= 2) {
-            b.style.position = "absolute";
-            b.style.left = Math.random() * 70 + "vw";
-            b.style.top = Math.random() * 70 + "vh";
-        } else {
-            b.style.position = "relative";
-            b.style.left = "0px";
-            b.style.top = "0px";
-            yesCount = 0; // Reset for next time
-        }
-    }
 </script>
 </body>
 </html>
+
+
+
 
 
 
