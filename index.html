@@ -44,95 +44,98 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
         button:hover { transform: scale(1.1); background: #6a0dad; }
-        /* GALLERY AREA */
-        .gallery-container { max-width: 1000px; margin: auto; padding: 20px; padding-bottom: 80px; }
-        .headline { font-size: 26px; font-weight: bold; margin-bottom: 20px; font-style: italic; }
-        /* MEETING IMAGES */
-        .merged-images {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            height: 310px;
-            margin-bottom: 30px;
-        }
-        .merged-images img {
-            width: 190px;
-            height: 270px;
-            object-fit: cover;
-            border-radius: 20px;
-            cursor: pointer;
-            box-shadow: 0 10px 20px rgba(128, 0, 128, 0.4);
-        }
-        .left-img { animation: slideMeetLeft 2.5s ease-out forwards; }
-        .right-img { animation: slideMeetRight 2.5s ease-out forwards; }
-        @keyframes slideMeetLeft { from { transform: translateX(-300px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-        @keyframes slideMeetRight { from { transform: translateX(300px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-        /* SCROLLABLE ROW */
-        .image-row {
-            display: flex;
-            gap: 15px;
-            overflow-x: auto;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 20px;
-        }
-        .image-row img {
-            width: 140px;
-            height: 190px;
-            flex-shrink: 0;
-            object-fit: cover;
-            border-radius: 15px;
-            cursor: pointer;
-        }
-        /* ZOOM MODAL WITH NOTE */
-        #modal {
+
+        /* Secret Letter Style */
+        #letterContainer {
             display: none;
             position: fixed;
-            z-index: 999;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 150px;
+            cursor: pointer;
+            z-index: 1000;
+            animation: bounce 2s infinite;
         }
+        @keyframes bounce { 0%, 100% { transform: translate(-50%, -50%) scale(1); } 50% { transform: translate(-50%, -50%) scale(1.2); } }
+
+        /* Gallery Styles */
+        .gallery-container { max-width: 1000px; margin: auto; padding: 20px; padding-bottom: 80px; }
+        .headline { font-size: 26px; font-weight: bold; margin-bottom: 20px; font-style: italic; }
+        .merged-images { display: flex; justify-content: center; align-items: center; gap: 10px; height: 310px; margin-bottom: 30px; }
+        .merged-images img { width: 190px; height: 270px; object-fit: cover; border-radius: 20px; cursor: pointer; }
+        .image-row { display: flex; gap: 15px; overflow-x: auto; padding: 20px; background: rgba(255, 255, 255, 0.3); border-radius: 20px; }
+        .image-row img { width: 140px; height: 190px; flex-shrink: 0; object-fit: cover; border-radius: 15px; cursor: pointer; }
+
+        /* Modal Styles */
+        #modal { display: none; position: fixed; z-index: 999; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.9); flex-direction: column; justify-content: center; align-items: center; }
         #modal img { max-width: 80%; max-height: 60%; border-radius: 10px; border: 3px solid white; }
         #modalNote { color: white; font-size: 20px; margin-top: 15px; text-align: center; width: 80%; }
         .close-modal { position: absolute; top: 20px; right: 30px; color: white; font-size: 40px; cursor: pointer; }
-        .footer-text { font-size: 20px; font-weight: bold; margin-top: 20px; }
-        .heart { position: fixed; bottom: -50px; font-size: 22px; animation: float 6s linear infinite; z-index: -1; }
-        @keyframes float { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(-110vh); opacity: 0; } }
+
+        /* Flying Emojis */
+        .fly-emoji { position: fixed; bottom: -50px; font-size: 30px; animation: floatUp 4s linear forwards; z-index: 2000; }
+        @keyframes floatUp { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; } }
+        
+        /* Big Hug & Kiss Zoom Overlay */
+        #hugOverlay { 
+            display: none; 
+            position: fixed; 
+            top: 0; left: 0; 
+            width: 100%; height: 100%; 
+            background: rgba(255,255,255,0.8); 
+            z-index: 3000; 
+            justify-content: center; 
+            align-items: center; 
+            flex-direction: column;
+        }
+        .zoom-emoji {
+            font-size: 10px;
+            animation: growEmoji 2.5s ease-in-out forwards;
+        }
+        @keyframes growEmoji {
+            0% { transform: scale(1); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: scale(30); opacity: 0; }
+        }
     </style>
 </head>
 <body>
-<audio id="nasheedAudio" loop>
-    <source src="nasheed.mp3" type="audio/mpeg">
-</audio>
+
+<audio id="nasheedAudio" loop><source src="nasheed.mp3" type="audio/mpeg"></audio>
+
 <div id="modal">
     <span class="close-modal" onclick="closeZoom()">&times;</span>
     <img id="modalImg">
     <div id="modalNote"></div>
 </div>
+
+<div id="letterContainer" onclick="openLetter()">💌</div>
+<div id="hugOverlay">
+    <div class="zoom-emoji">🫂😘</div>
+</div>
+
 <div class="page active" id="page1">
     <div class="typing" id="text1"></div>
-    <button class="next-btn" id="btn1" onclick="startEverything()" style="display:inline-block;">Yes 💜</button>
+    <button class="next-btn" id="btn1" onmouseover="moveYes()" onclick="startEverything()" style="display:inline-block;">Yes 💜</button>
     <button id="noBtn" onmouseover="moveNo()" style="padding:12px 28px; border-radius:30px; cursor:pointer;">No 🙈</button>
 </div>
+
 <div class="page" id="page2">
     <div class="typing" id="text2"></div>
-    <button class="next-btn" id="btn2" onclick="showPage(3)">😜 Next 💕</button>
+    <button class="next-btn" id="btn2" onclick="triggerFly('😍'); showPage(3)">😜 Next 💕</button>
 </div>
+
 <div class="page" id="page3">
     <div class="typing" id="text3"></div>
-    <button class="next-btn" id="btn3" onclick="showPage(4)">See Our Memories ✨</button>
+    <button class="next-btn" id="btn3" onclick="triggerFly('🥹'); triggerFly('😘'); triggerFly('💋'); showLetter()">See Our Memories🥹 ✨</button>
 </div>
+
 <div class="page" id="page4">
     <div class="gallery-container">
-        <div class="headline">These are just small memories... 📸 & 😅click me😜 chloo😘</div>
+        <div class="headline">These are just small memories📸 & click me 🤭 chloo 😜</div>
         <div class="merged-images">
-            <img src="love1.jpg" class="left-img" onclick="openZoom(this.src, 'image1')">
-            <img src="love2.jpg" class="right-img" onclick="openZoom(this.src, 'image2')">
+            <img src="love1.jpg" onclick="openZoom(this.src, 'image1')">
+            <img src="love2.jpg" onclick="openZoom(this.src, 'image2')">
         </div>
         <div class="image-row">
             <img src="love3.jpg" onclick="openZoom(this.src, 'image3')">
@@ -140,80 +143,81 @@
             <img src="love5.jpg" onclick="openZoom(this.src, 'image5')">
             <img src="love6.jpg" onclick="openZoom(this.src, 'image6')">
         </div>
-        <div class="footer-text">In sha Allah, we will create more memories together! 🤲💜</div>
-        <button onclick="location.reload()" class="next-btn" style="display:inline-block;">Start Over 🔄</button>
+        <button onclick="finalHug()" class="next-btn" style="display:inline-block;">I Love You so soo muchhhh machaa😘🫂💕</button>
     </div>
 </div>
+
 <script>
     const nasheed = document.getElementById("nasheedAudio");
-    // Personal Notes for Gallery Zoom
     const notes = {
-        'image1': "💓The moment Allah destined our souls to meet, my life finally made sense💍💜",
-        'image2': "Your peace is my favorite place in this entire world ✨🏡 ",
-        'image3': "You are the greatest blessing I have ever received✨More than the love I have for you, it’s the way you care for me that makes me fall for you deeper every day. I feel so safe and happy with you, my King! 🤴💜",
-        'image4': "Every time I pray🤲 I thank Allah for choosing YOU to be my partner💍. You are the answer to all my prayers🫂🤲💖",
-        'image5': "I dream of a home filled with our laughter, raising our babies together in a life full of happiness. To our beautiful future, In sha Allah 🫂👶🌍",
-        'image6': "I don't just want to grow old with you in this world; I want to walk through the gates of Jannah with you, hand in hand, for all of eternity. 😘♾️"
+        'image1': "The moment Allah destined our souls to meet...💍💜",
+        'image2': "Your peace is my favorite place...✨🏡",
+        'image3': "You are the greatest blessing...🤴💜",
+        'image4': "Every time I pray, I thank Allah for YOU...🫂🤲💖",
+        'image5': "I dream of a home filled with our laughter...🫂👶🌍",
+        'image6': "Hand in hand to Jannah, for all eternity...😘♾️"
     };
+
     function typeEffect(id, text, btnId) {
-        let i = 0;
-        let element = document.getElementById(id);
-        let btn = document.getElementById(btnId);
-        element.innerHTML = "";
-        if(btn) btn.style.display = "none"; 
+        let i = 0; let element = document.getElementById(id); let btn = document.getElementById(btnId);
+        element.innerHTML = ""; if(btn) btn.style.display = "none";
         function typing() {
             if (i < text.length) {
-                if(text.slice(i, i+4) === "<br>") {
-                    element.innerHTML += "<br>"; i += 4;
-                } else {
-                    element.innerHTML += text.charAt(i); i++;
-                }
+                element.innerHTML += (text.slice(i, i+4) === "<br>") ? (i+=4, "<br>") : text.charAt(i++);
                 setTimeout(typing, 35);
-            } else if(btn) {
-                btn.style.display = "inline-block";
-            }
+            } else if(btn) btn.style.display = "inline-block";
         }
         typing();
     }
-    typeEffect("text1", "Will You Stay With Me Forever? 💜", "btn1");
+
+    typeEffect("text1", "Will You Stay With Me Forever baby🫂? 🤍💜", "btn1");
     function startEverything() { nasheed.play(); showPage(2); }
+
     function showPage(pageNumber) {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         const targetPage = document.getElementById('page' + pageNumber);
-        targetPage.classList.add('active');
-        if (pageNumber === 2) {
-            typeEffect("text2", "Since you came into my life🫂, everything became more beautiful😘💕. <br>You are my peace🥰, my happiness🥹, my forever💕😘", "btn2");
-        } else if (pageNumber === 3) {
-            typeEffect("text3", 
-                "You are the calm in my chaos😘 and the smile in my every day🥰 <br><br>" +
-                "In a world full of temporary things🫂, you are my forever💕 <br><br>" +
-                "I don't just want you in this life in Akhirah , I want you in Jannah too. ✨ I pray that Allah blesses our journey and grants us a home filled with happiness, where we grow together and raise our babies 🫂 with a love that leads us both to Jannah. 🤲 <br><br>" +
-                "Even in Paradise🫶, among all its wonders, my eyes will still only look for you. I want to walk through the gates of Jannah together, hand in hand🤝, loving you for all of eternity😘🥰.", "btn3");
-        }
-        if(pageNumber === 4) startHearts();
+        if(targetPage) targetPage.classList.add('active');
+        if (pageNumber === 2) typeEffect("text2", "Since you came into my life... You are my peace🥰", "btn2");
+        if (pageNumber === 3) typeEffect("text3", "In a world full of temporary things, you are my forever💕", "btn3");
     }
+
+    function triggerFly(emoji) {
+        for(let i=0; i<15; i++) {
+            let e = document.createElement("div"); e.classList.add("fly-emoji");
+            e.innerHTML = emoji; e.style.left = Math.random() * 100 + "vw";
+            e.style.animationDelay = Math.random() * 2 + "s";
+            document.body.appendChild(e);
+            setTimeout(() => e.remove(), 5000);
+        }
+    }
+
+    function showLetter() {
+        document.getElementById("page3").classList.remove("active");
+        document.getElementById("letterContainer").style.display = "block";
+    }
+
+    function openLetter() {
+        document.getElementById("letterContainer").style.display = "none";
+        showPage(4);
+        triggerFly('✨');
+    }
+
+    function finalHug() {
+        document.getElementById("hugOverlay").style.display = "flex";
+        // 2.5 seconds zoom aagum, appuram reload
+        setTimeout(() => { location.reload(); }, 2500);
+    }
+
     function openZoom(src, imgKey) {
         document.getElementById("modal").style.display = "flex";
         document.getElementById("modalImg").src = src;
-        document.getElementById("modalNote").innerText = notes[imgKey] || "A beautiful memory! 💜";
+        document.getElementById("modalNote").innerText = notes[imgKey] || "💜";
     }
     function closeZoom() { document.getElementById("modal").style.display = "none"; }
-    function moveNo() {
-        let btn = document.getElementById("noBtn");
-        btn.style.position = "absolute";
-        btn.style.left = Math.random() * 70 + "vw";
-        btn.style.top = Math.random() * 70 + "vh";
-    }
-    function startHearts() {
-        setInterval(function() {
-            let heart = document.createElement("div");
-            heart.classList.add("heart");
-            heart.innerHTML = ["💜", "🤍", "✨", "💖"][Math.floor(Math.random()*4)];
-            heart.style.left = Math.random() * 100 + "vw";
-            document.body.appendChild(heart);
-            setTimeout(() => { heart.remove(); }, 6000);
-        }, 400);
-    }
+    function moveNo() { let b = document.getElementById("noBtn"); b.style.position="absolute"; b.style.left=Math.random()*70+"vw"; b.style.top=Math.random()*70+"vh"; }
+    function moveYes() { let b = document.getElementById("btn1"); b.style.position="absolute"; b.style.left=Math.random()*70+"vw"; b.style.top=Math.random()*70+"vh"; }
 </script>
 </body>
 </html>
+
+
