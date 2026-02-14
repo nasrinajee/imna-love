@@ -31,6 +31,11 @@
             margin: auto;
             white-space: pre-wrap;
         }
+        .btn-container {
+            margin-top: 30px;
+            position: relative;
+            height: 100px;
+        }
         .next-btn {
             display: none; 
             padding: 12px 28px;
@@ -38,12 +43,20 @@
             border: none;
             border-radius: 30px;
             cursor: pointer;
-            margin: 20px;
             background: purple;
             color: white;
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
         }
-        button:hover { transform: scale(1.1); background: #6a0dad; }
+        #noBtn {
+            padding: 12px 28px;
+            font-size: 18px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            background: #ddd;
+            transition: all 0.3s ease;
+        }
 
         /* Secret Letter Style */
         #letterContainer {
@@ -58,7 +71,6 @@
         }
         @keyframes bounce { 0%, 100% { transform: translate(-50%, -50%) scale(1); } 50% { transform: translate(-50%, -50%) scale(1.2); } }
 
-        /* Gallery Styles */
         .gallery-container { max-width: 1000px; margin: auto; padding: 20px; padding-bottom: 80px; }
         .headline { font-size: 26px; font-weight: bold; margin-bottom: 20px; font-style: italic; }
         .merged-images { display: flex; justify-content: center; align-items: center; gap: 10px; height: 310px; margin-bottom: 30px; }
@@ -66,17 +78,14 @@
         .image-row { display: flex; gap: 15px; overflow-x: auto; padding: 20px; background: rgba(255, 255, 255, 0.3); border-radius: 20px; }
         .image-row img { width: 140px; height: 190px; flex-shrink: 0; object-fit: cover; border-radius: 15px; cursor: pointer; }
 
-        /* Modal Styles */
         #modal { display: none; position: fixed; z-index: 999; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.9); flex-direction: column; justify-content: center; align-items: center; }
         #modal img { max-width: 80%; max-height: 60%; border-radius: 10px; border: 3px solid white; }
         #modalNote { color: white; font-size: 20px; margin-top: 15px; text-align: center; width: 80%; }
         .close-modal { position: absolute; top: 20px; right: 30px; color: white; font-size: 40px; cursor: pointer; }
 
-        /* Flying Emojis */
         .fly-emoji { position: fixed; bottom: -50px; font-size: 30px; animation: floatUp 4s linear forwards; z-index: 2000; }
         @keyframes floatUp { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; } }
         
-        /* Big Hug & Kiss Zoom Overlay */
         #hugOverlay { 
             display: none; 
             position: fixed; 
@@ -95,7 +104,7 @@
         @keyframes growEmoji {
             0% { transform: scale(1); opacity: 0; }
             50% { opacity: 1; }
-            100% { transform: scale(30); opacity: 0; }
+            100% { transform: scale(35); opacity: 0; }
         }
     </style>
 </head>
@@ -116,8 +125,10 @@
 
 <div class="page active" id="page1">
     <div class="typing" id="text1"></div>
-    <button class="next-btn" id="btn1" onmouseover="moveYes()" onclick="startEverything()" style="display:inline-block;">Yes 💜</button>
-    <button id="noBtn" onmouseover="moveNo()" style="padding:12px 28px; border-radius:30px; cursor:pointer;">No 🙈</button>
+    <div class="btn-container">
+        <button class="next-btn" id="btn1" onmouseover="moveYes()" onclick="startEverything()" style="display:inline-block;">Yes 💜</button>
+        <button id="noBtn" onmouseover="moveNo()">No 🙈</button>
+    </div>
 </div>
 
 <div class="page" id="page2">
@@ -157,6 +168,9 @@
         'image5': "I dream of a home filled with our laughter...🫂👶🌍",
         'image6': "Hand in hand to Jannah, for all eternity...😘♾️"
     };
+
+    let yesCount = 0;
+    let noCount = 0;
 
     function typeEffect(id, text, btnId) {
         let i = 0; let element = document.getElementById(id); let btn = document.getElementById(btnId);
@@ -204,7 +218,6 @@
 
     function finalHug() {
         document.getElementById("hugOverlay").style.display = "flex";
-        // 2.5 seconds zoom aagum, appuram reload
         setTimeout(() => { location.reload(); }, 2500);
     }
 
@@ -214,10 +227,39 @@
         document.getElementById("modalNote").innerText = notes[imgKey] || "💜";
     }
     function closeZoom() { document.getElementById("modal").style.display = "none"; }
-    function moveNo() { let b = document.getElementById("noBtn"); b.style.position="absolute"; b.style.left=Math.random()*70+"vw"; b.style.top=Math.random()*70+"vh"; }
-    function moveYes() { let b = document.getElementById("btn1"); b.style.position="absolute"; b.style.left=Math.random()*70+"vw"; b.style.top=Math.random()*70+"vh"; }
+
+    function moveNo() {
+        let b = document.getElementById("noBtn");
+        noCount++;
+        if (noCount <= 5) {
+            b.style.position = "absolute";
+            b.style.left = Math.random() * 70 + "vw";
+            b.style.top = Math.random() * 70 + "vh";
+        } else {
+            b.style.position = "relative";
+            b.style.left = "0px";
+            b.style.top = "0px";
+            noCount = 0; // Reset for next time
+        }
+    }
+
+    function moveYes() {
+        let b = document.getElementById("btn1");
+        yesCount++;
+        if (yesCount <= 2) {
+            b.style.position = "absolute";
+            b.style.left = Math.random() * 70 + "vw";
+            b.style.top = Math.random() * 70 + "vh";
+        } else {
+            b.style.position = "relative";
+            b.style.left = "0px";
+            b.style.top = "0px";
+            yesCount = 0; // Reset for next time
+        }
+    }
 </script>
 </body>
 </html>
+
 
 
